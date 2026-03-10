@@ -1,5 +1,5 @@
 import { useState, useContext, useRef } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { SnackbarContext } from "../components/AppSnackbar";
@@ -73,7 +73,7 @@ export default function Login() {
 
       setLoading(true);
 
-      const res = await axios.post("http://localhost:8000/api/login/", {
+      const res = await axiosInstance.post("/api/login/", {
         email,
         password
       });

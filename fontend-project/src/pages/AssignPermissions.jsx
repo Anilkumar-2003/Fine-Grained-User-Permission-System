@@ -63,15 +63,18 @@ export default function AssignPermissions() {
         setPermissions(mappedPerms);
 
       } catch (err) {
+        if (err?.response?.status !== 404) {
+          showSnackbar("Failed to load permissions", "error");
+        }
+
         console.error(err);
-        showSnackbar("Failed to load data", "error");
       }
     };
 
     loadInitial();
   }, []);
 
- 
+
 
   useEffect(() => {
 
@@ -91,7 +94,9 @@ export default function AssignPermissions() {
 
       } catch (err) {
         console.error(err);
-        showSnackbar("Failed to load permissions", "error");
+        if (err?.response?.status !== 404) {
+          showSnackbar("Failed to load permissions", "error");
+        }
       }
     };
 
@@ -148,7 +153,7 @@ export default function AssignPermissions() {
       };
 
       await axiosInstance.post(
-        "/api/assign-permissions/",
+        "api/assign-permissions/",
         payload
       );
 
@@ -197,81 +202,81 @@ export default function AssignPermissions() {
 
       {/* <Paper sx={{ p: 0, maxWidth: 1200, mx: "auto" }}> */}
 
-        <Typography
-          variant="h4"
-          fontWeight={500}
-          sx={{ color: "#003465", mb: 2 }}
-          >
-          Assign Permissions to User
-        </Typography>
+      <Typography
+        variant="h4"
+        fontWeight={500}
+        sx={{ color: "#003465", mb: 2 }}
+      >
+        Assign Permissions to User
+      </Typography>
 
 
-        <Autocomplete
-          options={users}
-          value={selectedUser}
-          onChange={(e, v) => setSelectedUser(v)}
-          getOptionLabel={(u) => u?.email ?? ""}
-          sx={{ width: 350, mb: 3 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Select User" />
-          )}
-        />
+      <Autocomplete
+        options={users}
+        value={selectedUser}
+        onChange={(e, v) => setSelectedUser(v)}
+        getOptionLabel={(u) => u?.email ?? ""}
+        sx={{ width: 350, mb: 3 }}
+        renderInput={(params) => (
+          <TextField {...params} label="Select User" />
+        )}
+      />
 
 
-        <Grid container spacing={2} justifyContent="center">
+      <Grid container spacing={2} justifyContent="center">
 
-          <Grid>{customList(leftPermissions, "Available Permissions")}</Grid>
+        <Grid>{customList(leftPermissions, "Available Permissions")}</Grid>
 
-          <Grid>
-            <Grid container direction="column" alignItems="center">
+        <Grid>
+          <Grid container direction="column" alignItems="center">
 
-              <Button
-                sx={{
-                  backgroundColor: "#003465",
-                  my: 1
-                }}
-                variant="contained"
-                disabled={leftChecked.length === 0}
-                onClick={moveRight}
-              >
-                &gt;
-              </Button>
+            <Button
+              sx={{
+                backgroundColor: "#003465",
+                my: 1
+              }}
+              variant="contained"
+              disabled={leftChecked.length === 0}
+              onClick={moveRight}
+            >
+              &gt;
+            </Button>
 
-              <Button
-                sx={{
-                  backgroundColor: "#003465",
-                  my: 1
-                }}
-                variant="contained"
-                disabled={rightChecked.length === 0}
-                onClick={moveLeft}
-              >
-                &lt;
-              </Button>
+            <Button
+              sx={{
+                backgroundColor: "#003465",
+                my: 1
+              }}
+              variant="contained"
+              disabled={rightChecked.length === 0}
+              onClick={moveLeft}
+            >
+              &lt;
+            </Button>
 
-            </Grid>
           </Grid>
-
-          <Grid>{customList(rightPermissions, "Assigned Permissions")}</Grid>
-
         </Grid>
 
-    
+        <Grid>{customList(rightPermissions, "Assigned Permissions")}</Grid>
 
-        <Box textAlign="center" mt={3}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleSave}
-            disabled={!selectedUser || assignedPermissions.length === 0}
-            sx={{
-              backgroundColor: "#003465",
-              my: 1
-            }}
-          >
-            Save Mapping
-          </Button>
-        </Box>
+      </Grid>
+
+
+
+      <Box textAlign="center" mt={3}>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleSave}
+          disabled={!selectedUser || assignedPermissions.length === 0}
+          sx={{
+            backgroundColor: "#003465",
+            my: 1
+          }}
+        >
+          Save Mapping
+        </Button>
+      </Box>
 
       {/* </Paper> */}
 
